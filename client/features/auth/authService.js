@@ -1,7 +1,6 @@
 import axios from "axios";
 const API_URL_SIGNUP = "/api/signup";
 const API_URL_LOGIN = "/api/login";
-
 const API_URL_USER = "/api/user";
 
 // register user
@@ -41,8 +40,7 @@ const login = async (userData) => {
 const logout = async () => {
   localStorage.clear();
   sessionStorage.clear();
-  const response = await axios.post("/api/logout");
-  return response.data;
+  return await axios.get("/api/logout");
 };
 
 const authService = {
