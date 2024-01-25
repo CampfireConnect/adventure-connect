@@ -146,6 +146,7 @@ userController.removeLikedUser = async (req, res, next) => {
 userController.verifyUser = async (req, res, next) => {
   const { user_id } = req.body;
   const _id = user_id;
+  console.log(req.body);
 
   try {
     const user = await User.findOne({ _id });
