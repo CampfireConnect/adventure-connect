@@ -291,7 +291,6 @@ const SettingsContainer = () => {
       </div>
       <div style={verticalLineStyle}></div>
       <div>
-        /*needs styling
         {renderSettingsComponent()}
       </div>
     </div>

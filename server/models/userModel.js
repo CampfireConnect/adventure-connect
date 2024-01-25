@@ -10,9 +10,10 @@ const usersSchema = new mongoose.Schema({
   interests: { type: Array },
   images: { type: Array },
   bio: { type: String },
-  iLiked: [{ type: String, unique: true }], //list of users that the current user has liked 
-  likedBy: [{ type: String}], //list of users that have liked the current user 
-  matches: [{ type: String }],
+  iLiked: { type: [String], default: [],}
+  //list of users that the current user has liked 
+  // likedBy: [{ type: String}], //list of users that have liked the current user 
+  // matches: [{ type: String }],
 });
 
 usersSchema.pre('save', async function(next) {

@@ -68,7 +68,7 @@ const Signup = () => {
     dispatch(register(userInfo))
       .unwrap()
       .then(() => {
-        navigate("/app/imageupload");
+        navigate("/app/dashboard");
       })
       .catch((error) => {
         console.error(error);

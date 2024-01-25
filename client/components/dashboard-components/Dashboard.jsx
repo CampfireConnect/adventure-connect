@@ -28,6 +28,7 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col h-screen w-full bg-black text-white">
       <NavBar className="" />
+      {users.length===0 && <p style={{color: 'red', fontWeight: 'bold', textAlign: 'center', fontSize: '50'}}>Aw man, looks like no one's registered in your area yet! Hang tight.</p>}
       <Carousel
         users={users}
         currentUser={currentUser}

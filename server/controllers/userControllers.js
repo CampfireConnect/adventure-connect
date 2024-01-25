@@ -1,6 +1,5 @@
 const { createErr } = require("../utils/errorCreator");
 // const Images = require("../models/imageModel");
-require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 require('dotenv').config;
@@ -55,6 +54,10 @@ userController.verifyLogin = async (req, res, next) => {
 
 userController.createNewUser = async (req, res, next) => {
   const { name, email, password, zipCode, interests, bio } = req.body;
+  // console.log({ name, email, password, zipCode, interests, bio });
+
+  //initialize to empty
+  // const iLiked = [];
 
   try {
     const newUser = await User.create({
@@ -64,16 +67,18 @@ userController.createNewUser = async (req, res, next) => {
       zipCode,
       interests,
       bio,
+      iLiked: [],
     });
 
-    console.log("new user saved to database");
+    // console.log("new user saved to database");
     // console.log(newUser);
 
     res.locals.user = newUser;
 
     const currentUser = { user: newUser._id};
+    console.log(process.env.ACCESS_TOKEN_SECRET);
     const accessToken = jwt.sign(currentUser, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1800s'});
-    console.log(accessToken);
+    // console.log(accessToken);
     res.locals.accessToken = accessToken;
     res.cookie('access_token', accessToken, {
       httpOnly: true, 
@@ -85,8 +90,9 @@ userController.createNewUser = async (req, res, next) => {
 
     return next();
   } catch (error) {
-    return next({ message: { err: "Email is already in use" } });
-  }
+    console.error("Error in createUser:", error);
+    res.status(500).json({ error: error.message });
+  }  
 };
 
 userController.updateUser = async (req, res, next) => {
@@ -172,7 +178,6 @@ console.log('user id is', userId);
 try {
   // try to find a user that has the id that's sent on the query
   const currentUser = await User.findById(userId);
-  console.log('current user is', currentUser);
  //send 404 if can't find current user in database 
  if (!currentUser) {
    return res.status(404).json({ error: 'User not found' });
@@ -202,8 +207,8 @@ res.status(500).json({ error: 'Internal Server Error' });
 userController.authenticateToken = (req, res, next) => {
   console.log('authenticate token middleware ran');
   const token = req.cookies.access_token; // extract the token from cookies
-  console.log('token is', token)
-  console.log('token is', token)
+  // console.log('token is', token)
+  // console.log('token is', token)
   if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
